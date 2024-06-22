@@ -1,7 +1,9 @@
 package com.seunghoon.generator.feature.home
 
+import androidx.annotation.DrawableRes
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -16,6 +18,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.HorizontalDivider
@@ -23,6 +28,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -42,6 +48,46 @@ import com.seunghoon.generator.component.Header
 
 @Composable
 internal fun HomeScreen(navHostController: NavHostController) {
+    val list = remember {
+        mutableStateListOf(
+            Dopamine(
+                id = 0L,
+                title = "숙면",
+                checked = false,
+                image = R.drawable.ic_sleep,
+            ),
+            Dopamine(
+                id = 1L,
+                title = "TV",
+                checked = false,
+                image = R.drawable.ic_tv,
+            ),
+            Dopamine(
+                id = 2L,
+                title = "여행",
+                checked = false,
+                image = R.drawable.ic_trip,
+            ),
+            Dopamine(
+                id = 3L,
+                title = "음식",
+                checked = false,
+                image = R.drawable.ic_food,
+            ),
+            Dopamine(
+                id = 4L,
+                title = "도박",
+                checked = false,
+                image = R.drawable.ic_casino,
+            ),
+            Dopamine(
+                id = 5L,
+                title = "게임",
+                checked = false,
+                image = R.drawable.ic_game,
+            ),
+        )
+    }
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -85,6 +131,17 @@ internal fun HomeScreen(navHostController: NavHostController) {
                 text = "오늘의 도파민 선택하기",
                 style = Typography.HeadLine,
             )
+            LazyVerticalGrid(columns = GridCells.Adaptive(minSize = 152.dp)) {
+                items(list) {
+                    DopamineCard(
+                        title = it.title,
+                        imageUrl = it.image,
+                        checked = it.checked,
+                        onChecked = { },
+                        onClick = {},
+                    )
+                }
+            }
         }
     }
 }
@@ -129,10 +186,17 @@ internal fun MyDopamineCard(
     }
 }
 
+data class Dopamine(
+    val title: String,
+    val id: Long,
+    val checked: Boolean,
+    @DrawableRes val image: Int,
+)
+
 @Composable
 internal fun DopamineCard(
     title: String,
-    imageUrl: String,
+    imageUrl: Int,
     checked: Boolean,
     onChecked: () -> Unit,
     onClick: () -> Unit,
@@ -148,9 +212,9 @@ internal fun DopamineCard(
         label = "",
     )
 
-    Box {
-        AsyncImage(
-            model = imageUrl,
+    Box(modifier = Modifier.padding(12.dp)) {
+        Image(
+            painter = painterResource(id = imageUrl),
             contentDescription = null,
         )
         Column {
