@@ -1,12 +1,21 @@
 package com.seunghoon.generator.component
 
 import androidx.annotation.DrawableRes
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationBarItemColors
+import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import androidx.navigation.compose.currentBackStackEntryAsState
 import com.seunghoon.generator.R
 import com.seunghoon.generator.navigation.NavigationRoute
 
@@ -38,10 +47,22 @@ sealed class BottomMenu(
 
 @Composable
 internal fun BottomNavigationBar(navController: NavController) {
-    BottomAppBar {
+    val selectedRoute = navController.currentBackStackEntryAsState().value?.destination?.route
+    BottomAppBar(
+        modifier = Modifier.shadow(
+            elevation = 8.dp,
+        ),
+        containerColor = Color.White,
+    ) {
         menus.forEach { item ->
+            val selected = selectedRoute == item.route
+            val color by animateColorAsState(
+                targetValue = if (selected) Color(0xFFEE3B3B)
+                else Color(0xFFD9D9D9),
+                label = "",
+            )
             NavigationBarItem(
-                selected = false,
+                selected = selected,
                 onClick = {
                     navController.navigate(item.route) {
                         launchSingleTop = true
@@ -52,10 +73,12 @@ internal fun BottomNavigationBar(navController: NavController) {
                 },
                 icon = {
                     Icon(
+                        tint = color,
                         painter = painterResource(id = item.iconRes),
                         contentDescription = null,
                     )
                 },
+                colors = NavigationBarItemDefaults.colors(indicatorColor = Color.White),
             )
         }
     }
