@@ -1,7 +1,12 @@
 package com.seunghoon.generator.feature.recommend
 
+import android.net.Uri
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -13,19 +18,59 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.FileProvider
 import androidx.navigation.NavController
+import androidx.room.Room
 import com.seunghoon.designsystem.ui.theme.Typography
+import com.seunghoon.generator.DopaDatabase
+import com.seunghoon.generator.Feed
 import com.seunghoon.generator.component.Header
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import java.io.File
+
+lateinit var db: DopaDatabase
 
 @Composable
 internal fun RecommendScreen(navController: NavController) {
+    val context = LocalContext.current
+    db = Room.databaseBuilder(
+        context,
+        DopaDatabase::class.java,
+        "dopa-database",
+    ).build()
+    val dao = db.getFeedDao()
+    var title = ""
+    var imageUri by remember { mutableStateOf<Uri?>(null) }
+    val cameraLauncher =
+        rememberLauncherForActivityResult(contract = ActivityResultContracts.TakePicture()) { result ->
+            if (result) {
+                imageUri?.run {
+                    CoroutineScope(Dispatchers.IO).launch {
+                        dao.saveFeed(
+                            Feed(
+                                title = "책 읽기",
+                                uri = this.toString(),
+                            )
+                        )
+                    }
+                }
+            }
+        }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -98,7 +143,20 @@ internal fun RecommendScreen(navController: NavController) {
                     ) {
                         Text(text = "책 읽기")
                         Text(
-                            text = "인증하기>",
+                            modifier = Modifier.clickable(
+                                onClick = {
+                                    val imageFile = File(context.cacheDir, "image.png")
+                                    imageUri = FileProvider.getUriForFile(
+                                        context,
+                                        "${context.packageName}.fileProvider",
+                                        imageFile,
+                                    )
+                                    cameraLauncher.launch(imageUri)
+                                },
+                                interactionSource = remember { MutableInteractionSource() },
+                                indication = null,
+                            ),
+                            text = "인증하기 >",
                             color = Color(0xFF1E27FF),
                             fontSize = 10.sp,
                         )
@@ -172,7 +230,7 @@ internal fun RecommendScreen(navController: NavController) {
                     ) {
                         Text(text = "책 읽기")
                         Text(
-                            text = "인증하기>",
+                            text = "인증하기 >",
                             color = Color(0xFF1E27FF),
                             fontSize = 10.sp,
                         )

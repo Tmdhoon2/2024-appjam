@@ -2,6 +2,7 @@
 plugins {
     id(libs.plugins.android.application.get().pluginId)
     id(libs.plugins.kotlin.android.get().pluginId)
+    id("kotlin-kapt")
 }
 
 android {
@@ -61,6 +62,10 @@ dependencies {
     api(libs.androidx.compose.navigation)
     api(libs.io.insert.koin.android)
     api(libs.io.coil.compose)
+
+    implementation("androidx.room:room-runtime:2.6.1")
+    implementation("androidx.room:room-ktx:2.6.1")
+    kapt("androidx.room:room-compiler:2.6.1")
 
     testApi(libs.junit)
     androidTestApi(libs.androidx.junit)
