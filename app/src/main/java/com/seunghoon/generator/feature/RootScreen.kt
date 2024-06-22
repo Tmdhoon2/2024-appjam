@@ -36,7 +36,10 @@ internal fun RootScreen(navHostController: NavHostController) {
             }
 
             composable(route = NavigationRoute.Root.HOME) {
-                HomeScreen(navHostController = navHostController)
+                HomeScreen(
+                    navHostController = navHostController,
+                    navController = navController,
+                )
             }
 
             composable(route = NavigationRoute.Root.TAB2) {

@@ -4,10 +4,12 @@ import android.view.ViewGroup
 import android.webkit.JavascriptInterface
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.navigation.NavController
 import com.seunghoon.generator.navigation.NavigationRoute
@@ -17,10 +19,7 @@ import kotlinx.coroutines.launch
 
 @Composable
 internal fun SignInScreen(navController: NavController) {
-    val navigateToMain = {
-
-    }
-    Column(modifier = Modifier.fillMaxSize()) {
+    Column(modifier = Modifier.fillMaxSize().background(Color.White)) {
         AndroidView(
             factory = {
                 WebView(it).apply {

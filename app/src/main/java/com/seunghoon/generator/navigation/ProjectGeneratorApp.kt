@@ -16,7 +16,7 @@ internal fun ProjectGeneratorApp() {
             .navigationBarsPadding()
             .statusBarsPadding(),
         navController = navController,
-        startDestination = NavigationRoute.Main.route,
+        startDestination = NavigationRoute.Auth.route,
     ) {
         auth(navController = navController)
         main(navHostController = navController)

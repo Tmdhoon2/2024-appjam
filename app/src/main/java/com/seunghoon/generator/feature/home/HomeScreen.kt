@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -40,14 +41,19 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import com.seunghoon.designsystem.ui.theme.Typography
 import com.seunghoon.generator.R
 import com.seunghoon.generator.component.DopamineProgress
 import com.seunghoon.generator.component.Header
+import com.seunghoon.generator.navigation.NavigationRoute
 
 @Composable
-internal fun HomeScreen(navHostController: NavHostController) {
+internal fun HomeScreen(
+    navHostController: NavHostController,
+    navController: NavController,
+) {
     var start by remember { mutableIntStateOf(0) }
     var max by remember { mutableIntStateOf(100) }
 
@@ -59,33 +65,92 @@ internal fun HomeScreen(navHostController: NavHostController) {
             .background(Color(0xFFFFF7F7)),
     ) {
         Header(title = "도파민 다이어리")
-        Spacer(modifier = Modifier.height(18.dp))
-        Column(
-            modifier = Modifier
-                .verticalScroll(rememberScrollState())
-                .clip(RoundedCornerShape(10.dp))
-                .padding(horizontal = 18.dp)
-                .background(
-                    color = Color.White,
-                    shape = RoundedCornerShape(10.dp),
-                )
-                .padding(
-                    horizontal = 24.dp,
-                    vertical = 8.dp,
-                ),
-        ) {
+        Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
             Spacer(modifier = Modifier.height(18.dp))
-            Column(modifier = Modifier.fillMaxWidth()) {
+            Column(
+                modifier = Modifier
+                    .clip(RoundedCornerShape(10.dp))
+                    .padding(horizontal = 18.dp)
+                    .background(
+                        color = Color.White,
+                        shape = RoundedCornerShape(10.dp),
+                    )
+                    .padding(
+                        horizontal = 24.dp,
+                        vertical = 8.dp,
+                    ),
+            ) {
+                Spacer(modifier = Modifier.height(18.dp))
+                Column(modifier = Modifier.fillMaxWidth()) {
+                    Row {
+                        Column {
+                            Text(
+                                text = "현재 도파민",
+                                style = Typography.HeadLine.copy(
+                                    fontSize = 16.sp,
+                                )
+                            )
+                            Text(
+                                text = "오늘의 도파민 점수를 확인해보세요!",
+                                style = Typography.HeadLine.copy(
+                                    fontSize = 12.sp,
+                                ),
+                            )
+                        }
+                        Spacer(modifier = Modifier.weight(1f))
+                        Text(
+                            text = "$start/$max",
+                            style = Typography.Medium,
+                            fontWeight = FontWeight.Bold,
+                        )
+                    }
+                    Spacer(modifier = Modifier.height(28.dp))
+                    DopamineProgress(
+                        currentProgress = start.toFloat(),
+                        maxProgress = max.toFloat(),
+                    )
+                }
+            }
+            Spacer(modifier = Modifier.height(18.dp))
+            Image(
+                modifier = Modifier
+                    .padding(horizontal = 20.dp)
+                    .clickable(
+                        interactionSource = remember { MutableInteractionSource() },
+                        onClick = {
+                            navController.navigate(NavigationRoute.Root.RECOMMEND) {
+                                popUpTo(0) {
+                                    saveState = true
+                                }
+                            }
+                        },
+                        indication = null,
+                    ),
+                painter = painterResource(id = R.drawable.ic_5),
+                contentDescription = null,
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 20.dp)
+                    .clip(RoundedCornerShape(10.dp))
+                    .background(Color.White)
+                    .padding(
+                        horizontal = 12.dp,
+                        vertical = 12.dp,
+                    )
+            ) {
                 Row {
                     Column {
                         Text(
-                            text = "현재 도파민",
+                            text = "오늘의 도파민",
                             style = Typography.HeadLine.copy(
                                 fontSize = 16.sp,
                             )
                         )
                         Text(
-                            text = "오늘의 도파민 점수를 확인해보세요!",
+                            text = "도파민 점수를 올려보세요!",
                             style = Typography.HeadLine.copy(
                                 fontSize = 12.sp,
                             ),
@@ -93,126 +158,72 @@ internal fun HomeScreen(navHostController: NavHostController) {
                     }
                     Spacer(modifier = Modifier.weight(1f))
                     Text(
-                        text = "$start/$max",
-                        style = Typography.Medium,
-                        fontWeight = FontWeight.Bold,
+                        text = "${checked.size}/${maxChecked}",
+                        style = Typography.Medium.copy(fontWeight = FontWeight.Bold),
                     )
                 }
-                Spacer(modifier = Modifier.height(28.dp))
-                DopamineProgress(
-                    currentProgress = start.toFloat(),
-                    maxProgress = max.toFloat(),
-                )
-            }
-        }
-        Spacer(modifier = Modifier.height(18.dp))
-        Image(
-            modifier = Modifier.padding(horizontal = 20.dp),
-            painter = painterResource(id = R.drawable.ic_5),
-            contentDescription = null,
-        )
-        Spacer(modifier = Modifier.height(16.dp))
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 20.dp)
-                .clip(RoundedCornerShape(10.dp))
-                .background(Color.White)
-                .padding(
-                    horizontal = 12.dp,
-                    vertical = 12.dp,
-                )
-        ) {
-            Row {
-                Column {
-                    Text(
-                        text = "오늘의 도파민",
-                        style = Typography.HeadLine.copy(
-                            fontSize = 16.sp,
-                        )
+                Row {
+                    DopamineCard(
+                        title = "숙면",
+                        imageUrl = R.drawable.ic_sleep,
+                        checked = checked.contains(0),
+                        onChecked = {
+                            if (checked.contains(0)) {
+                                checked.remove(0)
+                                start -= 20
+                            } else {
+                                checked.add(0)
+                                start += 20
+                            }
+                        },
                     )
-                    Text(
-                        text = "도파민 점수를 올려보세요!",
-                        style = Typography.HeadLine.copy(
-                            fontSize = 12.sp,
-                        ),
+                    Spacer(modifier = Modifier.width(20.dp))
+                    DopamineCard(
+                        title = "TV",
+                        imageUrl = R.drawable.ic_tv,
+                        checked = checked.contains(1),
+                        onChecked = {
+                            if (checked.contains(1)) {
+                                checked.remove(1)
+                                start -= 20
+                            } else {
+                                checked.add(1)
+                                start += 20
+                            }
+                        },
                     )
                 }
-                Spacer(modifier = Modifier.weight(1f))
-                Text(
-                    text = "${checked.size}/${maxChecked}",
-                    style = Typography.Medium.copy(fontWeight = FontWeight.Bold),
-                )
-            }
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(1f), horizontalArrangement = Arrangement.Center
-            ) {
-                DopamineCard(
-                    title = "숙면",
-                    imageUrl = R.drawable.ic_sleep,
-                    checked = checked.contains(0),
-                    onChecked = {
-                        if (checked.contains(0)) {
-                            checked.remove(0)
-                            start -= 20
-                        } else {
-                            checked.add(0)
-                            start += 20
-                        }
-                    },
-                )
-                Spacer(modifier = Modifier.width(20.dp))
-                DopamineCard(
-                    title = "TV",
-                    imageUrl = R.drawable.ic_tv,
-                    checked = checked.contains(1),
-                    onChecked = {
-                        if (checked.contains(1)) {
-                            checked.remove(1)
-                            start -= 20
-                        } else {
-                            checked.add(1)
-                            start += 20
-                        }
-                    },
-                )
-            }
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(1f), horizontalArrangement = Arrangement.Center
-            ) {
-                DopamineCard(
-                    title = "여행",
-                    imageUrl = R.drawable.ic_trip,
-                    checked = checked.contains(2),
-                    onChecked = {
-                        if (checked.contains(2)) {
-                            checked.remove(2)
-                            start -= 20
-                        } else {
-                            checked.add(2)
-                            start += 20
-                        }
-                    },
-                )
-                Spacer(modifier = Modifier.width(20.dp))
-                DopamineCard(
-                    title = "음식",
-                    imageUrl = R.drawable.ic_food,
-                    checked = checked.contains(3),
-                    onChecked = {
-                        if (checked.contains(3)) {
-                            checked.remove(3)
-                            start -= 20
-                        } else {
-                            checked.add(3)
-                            start += 20
-                        }
-                    },
-                )
+                Row {
+                    DopamineCard(
+                        title = "여행",
+                        imageUrl = R.drawable.ic_trip,
+                        checked = checked.contains(2),
+                        onChecked = {
+                            if (checked.contains(2)) {
+                                checked.remove(2)
+                                start -= 20
+                            } else {
+                                checked.add(2)
+                                start += 20
+                            }
+                        },
+                    )
+                    Spacer(modifier = Modifier.width(20.dp))
+                    DopamineCard(
+                        title = "음식",
+                        imageUrl = R.drawable.ic_food,
+                        checked = checked.contains(3),
+                        onChecked = {
+                            if (checked.contains(3)) {
+                                checked.remove(3)
+                                start -= 20
+                            } else {
+                                checked.add(3)
+                                start += 20
+                            }
+                        },
+                    )
+                }
             }
         }
     }
@@ -239,6 +250,7 @@ internal fun RowScope.DopamineCard(
     Box(
         modifier = Modifier
             .weight(1f)
+            .aspectRatio(1f)
             .padding(12.dp)
             .clickable(
                 onClick = onChecked,

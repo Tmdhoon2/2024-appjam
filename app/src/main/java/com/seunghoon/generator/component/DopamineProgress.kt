@@ -44,10 +44,8 @@ internal fun DopamineProgress(
                     )
                 }
 
-                in 0.2f..0.5f -> {
+                in 0.2f..0.66f -> {
                     Image(
-                        alpha = if (progress in 0.34f..0.66f) 1f
-                        else 0f,
                         painter = painterResource(id = R.drawable.ic_2),
                         contentDescription = null,
                     )

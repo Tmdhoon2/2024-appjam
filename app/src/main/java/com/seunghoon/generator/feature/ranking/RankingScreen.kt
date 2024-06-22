@@ -31,6 +31,10 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.seunghoon.designsystem.ui.theme.Typography
 import com.seunghoon.generator.R
+import com.seunghoon.generator.component.Header
+
+val names = listOf("길근우", "이정호")
+val scores = listOf(517, 332)
 
 @Composable
 internal fun RankingScreen(navController: NavController) {
@@ -40,7 +44,7 @@ internal fun RankingScreen(navController: NavController) {
             .background(Color(0xFFFFF7F7))
 
     ) {
-        Header2(onClick = { /*TODO*/ }, title = "랭킹")
+        Header(title = "랭킹")
         Spacer(modifier = Modifier.height(18.dp))
         Column(
             modifier = Modifier
@@ -81,11 +85,11 @@ internal fun RankingScreen(navController: NavController) {
                 verticalArrangement = Arrangement.spacedBy(12.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
-                repeat(4) {
+                repeat(2) {
                     Rank(
                         id = it + 3,
-                        name = "홍길동",
-                        score = "212",
+                        name = names[it],
+                        score = scores[it].toString(),
                     )
                 }
                 Image(
@@ -94,7 +98,7 @@ internal fun RankingScreen(navController: NavController) {
                 )
                 Rank(
                     id = 8,
-                    name = "홍길동",
+                    name = "테스트",
                     score = "212",
                 )
             }

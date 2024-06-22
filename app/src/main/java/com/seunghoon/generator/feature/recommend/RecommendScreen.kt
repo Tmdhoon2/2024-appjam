@@ -41,8 +41,25 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.File
+import java.util.UUID
 
 lateinit var db: DopaDatabase
+
+val titles = listOf(
+    "책 읽기",
+    "노래 감상하기",
+    "산책하기",
+    "운동하기",
+    "자전거 타기",
+)
+
+val already = listOf(
+    "청소하기",
+    "일기쓰기",
+    "독서하기",
+    "스마트폰 사용 줄이기",
+    "게임 줄이기"
+)
 
 @Composable
 internal fun RecommendScreen(navController: NavController) {
@@ -62,7 +79,7 @@ internal fun RecommendScreen(navController: NavController) {
                     imageUri?.run {
                         dao.saveFeed(
                             Feed(
-                                title = "책 읽기",
+                                title = title,
                                 uri = this.toString(),
                             )
                         )
@@ -112,7 +129,7 @@ internal fun RecommendScreen(navController: NavController) {
                     )
                 }
                 Text(
-                    text = "10개",
+                    text = "${titles.size}개",
                     style = Typography.HeadLine.copy(
                         fontSize = 12.sp,
                     ),
@@ -141,11 +158,13 @@ internal fun RecommendScreen(navController: NavController) {
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
-                        Text(text = "책 읽기")
+                        Text(text = titles[it])
                         Text(
                             modifier = Modifier.clickable(
                                 onClick = {
-                                    val imageFile = File(context.cacheDir, "image.png")
+                                    title = titles[it]
+                                    val imageFile =
+                                        File(context.cacheDir, "image${UUID.randomUUID()}.png")
                                     imageUri = FileProvider.getUriForFile(
                                         context,
                                         "${context.packageName}.fileProvider",
@@ -199,7 +218,7 @@ internal fun RecommendScreen(navController: NavController) {
                     )
                 }
                 Text(
-                    text = "9개",
+                    text = "${titles.size}개",
                     style = Typography.HeadLine.copy(
                         fontSize = 12.sp,
                     ),
@@ -228,8 +247,22 @@ internal fun RecommendScreen(navController: NavController) {
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
-                        Text(text = "책 읽기")
+                        Text(text = already[it])
                         Text(
+                            modifier = Modifier.clickable(
+                                onClick = {
+                                    title = already[it]
+                                    val imageFile = File(context.cacheDir, "image.png")
+                                    imageUri = FileProvider.getUriForFile(
+                                        context,
+                                        "${context.packageName}.fileProvider",
+                                        imageFile,
+                                    )
+                                    cameraLauncher.launch(imageUri)
+                                },
+                                interactionSource = remember { MutableInteractionSource() },
+                                indication = null,
+                            ),
                             text = "인증하기 >",
                             color = Color(0xFF1E27FF),
                             fontSize = 10.sp,
