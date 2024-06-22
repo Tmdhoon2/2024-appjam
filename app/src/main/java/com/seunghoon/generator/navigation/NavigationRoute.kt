@@ -11,6 +11,7 @@ sealed class NavigationRoute(val route: String) {
     }
 
     data object Root : NavigationRoute("root") {
+        val RANKING = "${this.route}/ranking"
         val RECOMMEND = "${this.route}/recommend"
         val HOME = "${this.route}/home"
         val TAB2 = "${this.route}/tab2"

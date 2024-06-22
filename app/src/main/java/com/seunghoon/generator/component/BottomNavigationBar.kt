@@ -19,6 +19,7 @@ import com.seunghoon.generator.R
 import com.seunghoon.generator.navigation.NavigationRoute
 
 private val menus = listOf(
+    BottomMenu.Ranking,
     BottomMenu.Tab1,
     BottomMenu.Home,
     BottomMenu.Tab2,
@@ -28,14 +29,19 @@ sealed class BottomMenu(
     val route: String,
     @DrawableRes val iconRes: Int,
 ) {
-    object Home : BottomMenu(
-        route = NavigationRoute.Root.HOME,
-        iconRes = R.drawable.ic_home,
+    object Ranking : BottomMenu(
+        route = NavigationRoute.Root.RANKING,
+        iconRes = R.drawable.ic_ranking,
     )
 
     object Tab1 : BottomMenu(
         route = NavigationRoute.Root.RECOMMEND,
         iconRes = R.drawable.ic_icon1,
+    )
+
+    object Home : BottomMenu(
+        route = NavigationRoute.Root.HOME,
+        iconRes = R.drawable.ic_home,
     )
 
     object Tab2 : BottomMenu(

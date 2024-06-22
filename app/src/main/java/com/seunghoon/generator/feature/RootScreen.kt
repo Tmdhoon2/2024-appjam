@@ -10,6 +10,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.seunghoon.generator.component.BottomNavigationBar
 import com.seunghoon.generator.feature.home.HomeScreen
+import com.seunghoon.generator.feature.ranking.RankingScreen
 import com.seunghoon.generator.feature.recommend.RecommendScreen
 import com.seunghoon.generator.navigation.NavigationRoute
 
@@ -25,6 +26,9 @@ internal fun RootScreen(navHostController: NavHostController) {
             navController = navController,
             startDestination = NavigationRoute.Root.HOME,
         ) {
+            composable(route = NavigationRoute.Root.RANKING) {
+                RankingScreen(navController = navController)
+            }
             composable(route = NavigationRoute.Root.RECOMMEND) {
                 RecommendScreen(navController = navController)
             }
