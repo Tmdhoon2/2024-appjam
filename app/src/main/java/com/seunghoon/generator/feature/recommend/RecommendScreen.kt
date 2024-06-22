@@ -1,66 +1,183 @@
 package com.seunghoon.generator.feature.recommend
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.HorizontalDivider
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.seunghoon.designsystem.ui.theme.Typography
 import com.seunghoon.generator.component.Header
-import com.seunghoon.generator.feature.home.MyDopamineCard
 
 @Composable
 internal fun RecommendScreen(navController: NavController) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.White),
+            .background(Color(0xFFFFF7F7)),
     ) {
-        Header(title = "title")
-        Column(modifier = Modifier.padding(horizontal = 24.dp)) {
-            Spacer(modifier = Modifier.height(26.dp))
-            Text(
-                text = "내 도파민 분석하기",
-                style = Typography.HeadLine,
-            )
-            Spacer(modifier = Modifier.height(26.dp))
-            HorizontalDivider(thickness = 1.dp)
-            Spacer(modifier = Modifier.height(28.dp))
-            Text(
-                text = "오늘의 점수",
-                style = Typography.HeadLine,
-            )
-            Spacer(modifier = Modifier.height(28.dp))
-            MyDopamineCard(title = "내 도파민 분석하기") {
-                Text(
-                    text = "75/100",
-                    color = Color(0x40000000),
-                    style = Typography.HeadLine.copy(fontSize = 16.sp),
+        Header(title = "추천 활동")
+        Spacer(modifier = Modifier.height(18.dp))
+        Column(
+            modifier = Modifier
+                .clip(RoundedCornerShape(10.dp))
+                .padding(horizontal = 20.dp)
+                .background(
+                    color = Color.White,
+                    shape = RoundedCornerShape(10.dp),
                 )
-            }
-            Spacer(modifier = Modifier.height(30.dp))
-            Column {
+                .padding(
+                    horizontal = 12.dp,
+                    vertical = 12.dp,
+                ),
+        ) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Column {
+                    Text(
+                        text = "추천 도파민 습관",
+                        style = Typography.HeadLine.copy(
+                            fontSize = 16.sp,
+
+                            ),
+                        fontWeight = FontWeight.Bold,
+                    )
+                    Text(
+                        text = "오늘의 도파민 점수를 위해 달려보세요",
+                        style = Typography.HeadLine.copy(
+                            fontSize = 12.sp,
+                        ),
+                    )
+                }
                 Text(
-                    text = "추천 활동!",
-                    style = Typography.HeadLine,
-                )
-                Spacer(modifier = Modifier.height(8.dp))
-                Text(
-                    text = "도파민 점수를 올릴 수 있어요.",
+                    text = "10개",
                     style = Typography.HeadLine.copy(
-                        color = Color(0x40000000),
-                        fontSize = 16.sp,
+                        fontSize = 12.sp,
                     ),
                 )
+            }
+            Spacer(modifier = Modifier.height(28.dp))
+            Column(
+                verticalArrangement = Arrangement.spacedBy(12.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+                repeat(5) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 12.dp)
+                            .background(Color.White)
+                            .border(
+                                width = 1.dp,
+                                color = Color(0xFFD9D9D9),
+                                shape = RoundedCornerShape(10.dp)
+                            )
+                            .padding(
+                                horizontal = 12.dp,
+                                vertical = 10.dp,
+                            ),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        Text(text = "책 읽기")
+                        Text(
+                            text = "인증하기>",
+                            color = Color(0xFF1E27FF),
+                            fontSize = 10.sp,
+                        )
+                    }
+                }
+            }
+        }
+        Spacer(modifier = Modifier.height(12.dp))
+        Column(
+            modifier = Modifier
+                .clip(RoundedCornerShape(10.dp))
+                .padding(horizontal = 20.dp)
+                .background(
+                    color = Color.White,
+                    shape = RoundedCornerShape(10.dp),
+                )
+                .padding(
+                    horizontal = 12.dp,
+                    vertical = 12.dp,
+                ),
+        ) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Column {
+                    Text(
+                        text = "완료한 도파민 습관",
+                        style = Typography.HeadLine.copy(
+                            fontSize = 16.sp,
+
+                            ),
+                        fontWeight = FontWeight.Bold,
+                    )
+                    Text(
+                        text = "완료한 도파민 습관을 확인해보세요!",
+                        style = Typography.HeadLine.copy(
+                            fontSize = 12.sp,
+                        ),
+                    )
+                }
+                Text(
+                    text = "9개",
+                    style = Typography.HeadLine.copy(
+                        fontSize = 12.sp,
+                    ),
+                )
+            }
+            Spacer(modifier = Modifier.height(28.dp))
+            Column(
+                verticalArrangement = Arrangement.spacedBy(12.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+                repeat(5) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 12.dp)
+                            .background(Color.White)
+                            .border(
+                                width = 1.dp,
+                                color = Color(0xFFD9D9D9),
+                                shape = RoundedCornerShape(10.dp)
+                            )
+                            .padding(
+                                horizontal = 12.dp,
+                                vertical = 10.dp,
+                            ),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        Text(text = "책 읽기")
+                        Text(
+                            text = "인증하기>",
+                            color = Color(0xFF1E27FF),
+                            fontSize = 10.sp,
+                        )
+                    }
+                }
             }
         }
     }
