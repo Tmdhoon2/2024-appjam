@@ -17,13 +17,12 @@ private val platFormTextStyle = PlatformTextStyle(
 
 // 이름 변경해서 사용
 object Typography {
-    /*val HeadLine = TextStyle(
-        fontFamily = FontFamily,
-        fontSize = 18.sp,
+    val HeadLine = TextStyle(
+        fontFamily = fontFamily,
+        fontSize = 20.sp,
         fontWeight = FontWeight.SemiBold,
-        lineHeight = 28.sp,
         platformStyle = platFormTextStyle,
-    )*/
+    )
     val Medium = TextStyle(
         fontFamily = fontFamily,
         fontSize = 14.sp,

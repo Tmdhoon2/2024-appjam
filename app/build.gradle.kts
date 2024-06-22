@@ -60,6 +60,7 @@ dependencies {
     api(libs.androidx.compose.material3)
     api(libs.androidx.compose.navigation)
     api(libs.io.insert.koin.android)
+    api(libs.io.coil.compose)
 
     testApi(libs.junit)
     androidTestApi(libs.androidx.junit)
