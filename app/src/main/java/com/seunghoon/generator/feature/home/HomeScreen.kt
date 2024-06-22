@@ -45,20 +45,40 @@ internal fun HomeScreen(navHostController: NavHostController) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.White)
+            .background(Color.White),
     ) {
         Header()
         Column(modifier = Modifier.padding(horizontal = 24.dp)) {
             Spacer(modifier = Modifier.height(26.dp))
             Text(
-                text = "내 도파민 분석하기",
+                text = "내 도파민 알아보기",
                 style = Typography.HeadLine,
             )
             Spacer(modifier = Modifier.height(26.dp))
             HorizontalDivider(thickness = 1.dp)
             Spacer(modifier = Modifier.height(16.dp))
-            MyDopamineCard {
-
+            MyDopamineCard(title = "내 도파민 알아보기") {
+                Row(
+                    modifier = Modifier.clickable(
+                        onClick = {},
+                        indication = null,
+                        interactionSource = remember { MutableInteractionSource() },
+                    ),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Text(
+                        text = "더 알아보기",
+                        style = Typography.HeadLine.copy(
+                            fontSize = 12.sp,
+                            color = Color(0x42000000),
+                        )
+                    )
+                    Spacer(modifier = Modifier.width(4.dp))
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_right),
+                        contentDescription = null,
+                    )
+                }
             }
             Spacer(modifier = Modifier.height(42.dp))
             Text(
@@ -71,7 +91,9 @@ internal fun HomeScreen(navHostController: NavHostController) {
 
 @Composable
 internal fun MyDopamineCard(
-    onClick: () -> Unit,
+    title: String,
+    onClick: () -> Unit = {},
+    content: @Composable () -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -89,34 +111,15 @@ internal fun MyDopamineCard(
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             Text(
-                text = "현재 내 도파민",
+                text = title,
                 style = Typography.HeadLine.copy(
                     fontSize = 16.sp,
                 )
             )
-            Row(
-                modifier = Modifier.clickable(
-                    onClick = onClick,
-                    indication = null,
-                    interactionSource = remember { MutableInteractionSource() },
-                ),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                Text(
-                    text = "더 알아보기",
-                    style = Typography.HeadLine.copy(
-                        fontSize = 12.sp,
-                        color = Color(0x22000000),
-                    )
-                )
-                Spacer(modifier = Modifier.width(4.dp))
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_right),
-                    contentDescription = null,
-                )
-            }
+            content()
         }
         Spacer(modifier = Modifier.height(10.dp))
         DopamineProgress(
