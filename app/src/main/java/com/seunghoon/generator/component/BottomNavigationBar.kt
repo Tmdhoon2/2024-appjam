@@ -23,6 +23,7 @@ private val menus = listOf(
     BottomMenu.Tab1,
     BottomMenu.Home,
     BottomMenu.Tab2,
+    BottomMenu.MyPage,
 )
 
 sealed class BottomMenu(
@@ -47,6 +48,11 @@ sealed class BottomMenu(
     object Tab2 : BottomMenu(
         route = NavigationRoute.Root.TAB2,
         iconRes = R.drawable.ic_icon2,
+    )
+
+    object MyPage : BottomMenu(
+        route = NavigationRoute.Root.MY_PAGE,
+        iconRes = R.drawable.ic_person,
     )
 }
 

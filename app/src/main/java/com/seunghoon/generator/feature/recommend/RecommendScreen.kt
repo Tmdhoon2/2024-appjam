@@ -58,8 +58,8 @@ internal fun RecommendScreen(navController: NavController) {
     val cameraLauncher =
         rememberLauncherForActivityResult(contract = ActivityResultContracts.TakePicture()) { result ->
             if (result) {
-                imageUri?.run {
-                    CoroutineScope(Dispatchers.IO).launch {
+                CoroutineScope(Dispatchers.IO).launch {
+                    imageUri?.run {
                         dao.saveFeed(
                             Feed(
                                 title = "책 읽기",

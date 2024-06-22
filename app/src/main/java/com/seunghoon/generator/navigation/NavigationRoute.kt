@@ -15,5 +15,6 @@ sealed class NavigationRoute(val route: String) {
         val RECOMMEND = "${this.route}/recommend"
         val HOME = "${this.route}/home"
         val TAB2 = "${this.route}/tab2"
+        val MY_PAGE = "${this.route}/myPage"
     }
 }
