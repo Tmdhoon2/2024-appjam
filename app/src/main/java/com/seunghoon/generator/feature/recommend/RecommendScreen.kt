@@ -25,7 +25,7 @@ internal fun RecommendScreen(navController: NavController) {
             .fillMaxSize()
             .background(Color.White),
     ) {
-        Header()
+        Header(title = "title")
         Column(modifier = Modifier.padding(horizontal = 24.dp)) {
             Spacer(modifier = Modifier.height(26.dp))
             Text(

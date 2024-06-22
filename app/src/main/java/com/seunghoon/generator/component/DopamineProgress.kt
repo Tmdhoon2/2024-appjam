@@ -2,12 +2,15 @@ package com.seunghoon.generator.component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -23,28 +26,122 @@ internal fun DopamineProgress(
     currentProgress: Float,
     maxProgress: Float,
 ) {
-    val progress = currentProgress / maxProgress
-    Box(contentAlignment = Alignment.CenterStart) {
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(12.dp)
-                .clip(RoundedCornerShape(50.dp))
-                .background(color = Color(0xFFFFE6E6)),
-        )
-        Row(modifier = Modifier.fillMaxWidth()) {
-            Spacer(modifier = Modifier.fillMaxWidth(progress))
-            Thumb()
+    val progress = currentProgress / maxProgress * 100
+    Column {
+        Box(contentAlignment = Alignment.CenterStart) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth(progress)
+                    .height(4.dp)
+                    .clip(RoundedCornerShape(50.dp))
+                    .background(color = Color(0xFFEE3C3C)),
+            )
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(4.dp)
+                    .clip(RoundedCornerShape(50.dp))
+                    .background(color = Color(0xFFD9D9D9)),
+            )
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceAround,
+            ) {
+                Image(
+                    alpha = if (progress in 0f..0.33f) 1f
+                    else 0f,
+                    painter = painterResource(id = R.drawable.ic_1),
+                    contentDescription = null,
+                )
+                Image(
+                    alpha = if (progress in 0.34f..0.66f) 1f
+                    else 0f,
+                    painter = painterResource(id = R.drawable.ic_2),
+                    contentDescription = null,
+                )
+                Image(
+                    alpha = if (progress in 0.67f..2f) 1f
+                    else 0f,
+                    painter = painterResource(id = R.drawable.ic_3),
+                    contentDescription = null,
+                )
+                Box(
+                    modifier = Modifier
+                        .size(
+                            width = 4.dp,
+                            height = 20.dp,
+                        )
+                        .clip(RoundedCornerShape(10.dp))
+                        .background(
+                            color = Color(
+                                if (progress in 0f..0.33f) 0xFFEE3C3C
+                                else 0xFFD9D9D9,
+                            )
+                        )
+                )
+                Box(
+                    modifier = Modifier
+                        .size(
+                            width = 4.dp,
+                            height = 20.dp,
+                        )
+                        .clip(RoundedCornerShape(10.dp))
+                        .background(
+                            color = Color(
+                                if (progress in 0.34f..0.66f) 0xFFEE3C3C
+                                else 0xFFD9D9D9,
+                            )
+                        )
+                )
+                Box(
+                    modifier = Modifier
+                        .size(
+                            width = 4.dp,
+                            height = 20.dp,
+                        )
+                        .clip(RoundedCornerShape(10.dp))
+                        .background(
+                            color = Color(
+                                if (progress in 0.67f..1f) 0xFFEE3C3C
+                                else 0xFFD9D9D9,
+                            )
+                        )
+                )
+            }
+        }
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceAround,
+        ) {
+            Column {
+                Text(
+                    text = "부족",
+                    color = Color(
+                        if (progress in 0f..0.33f) 0xFF000000
+                        else 0xFFD9D9D9,
+                    )
+                )
+            }
+            Column {
+                Text(
+                    text = "정상",
+                    color = Color(
+                        if (progress in 0.34f..0.66f) 0xFF000000
+                        else 0xFFD9D9D9,
+                    )
+                )
+            }
+            Column {
+                Text(
+                    text = "많음",
+                    color = Color(
+                        if (progress in 0.67f..2f) 0xFF000000
+                        else 0xFFD9D9D9,
+                    )
+                )
+            }
         }
     }
-}
-
-@Composable
-private fun Thumb() {
-    Image(
-        painter = painterResource(id = R.drawable.ic_thumb),
-        contentDescription = null,
-    )
 }
 
 @Preview(showBackground = true)

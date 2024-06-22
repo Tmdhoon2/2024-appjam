@@ -23,7 +23,7 @@ internal fun RootScreen(navHostController: NavHostController) {
         NavHost(
             modifier = Modifier.padding(it),
             navController = navController,
-            startDestination = NavigationRoute.Root.RECOMMEND,
+            startDestination = NavigationRoute.Root.HOME,
         ) {
             composable(route = NavigationRoute.Root.RECOMMEND) {
                 RecommendScreen(navController = navController)
