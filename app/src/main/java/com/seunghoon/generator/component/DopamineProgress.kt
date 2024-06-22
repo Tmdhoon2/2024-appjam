@@ -26,16 +26,32 @@ internal fun DopamineProgress(
     currentProgress: Float,
     maxProgress: Float,
 ) {
-    val progress = currentProgress / maxProgress * 100
+    val progress = currentProgress / maxProgress
     Column {
-        Box(contentAlignment = Alignment.CenterStart) {
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth(progress)
-                    .height(4.dp)
-                    .clip(RoundedCornerShape(50.dp))
-                    .background(color = Color(0xFFEE3C3C)),
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceAround,
+        ) {
+            Image(
+                alpha = if (progress in 0f..0.33f) 1f
+                else 0f,
+                painter = painterResource(id = R.drawable.ic_1),
+                contentDescription = null,
             )
+            Image(
+                alpha = if (progress in 0.34f..0.66f) 1f
+                else 0f,
+                painter = painterResource(id = R.drawable.ic_2),
+                contentDescription = null,
+            )
+            Image(
+                alpha = if (progress in 0.67f..2f) 1f
+                else 0f,
+                painter = painterResource(id = R.drawable.ic_3),
+                contentDescription = null,
+            )
+        }
+        Box(contentAlignment = Alignment.CenterStart) {
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -43,28 +59,17 @@ internal fun DopamineProgress(
                     .clip(RoundedCornerShape(50.dp))
                     .background(color = Color(0xFFD9D9D9)),
             )
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth(progress)
+                    .height(4.dp)
+                    .clip(RoundedCornerShape(50.dp))
+                    .background(color = Color(0xFFEE3C3C)),
+            )
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceAround,
+                horizontalArrangement = Arrangement.SpaceAround
             ) {
-                Image(
-                    alpha = if (progress in 0f..0.33f) 1f
-                    else 0f,
-                    painter = painterResource(id = R.drawable.ic_1),
-                    contentDescription = null,
-                )
-                Image(
-                    alpha = if (progress in 0.34f..0.66f) 1f
-                    else 0f,
-                    painter = painterResource(id = R.drawable.ic_2),
-                    contentDescription = null,
-                )
-                Image(
-                    alpha = if (progress in 0.67f..2f) 1f
-                    else 0f,
-                    painter = painterResource(id = R.drawable.ic_3),
-                    contentDescription = null,
-                )
                 Box(
                     modifier = Modifier
                         .size(
@@ -74,7 +79,7 @@ internal fun DopamineProgress(
                         .clip(RoundedCornerShape(10.dp))
                         .background(
                             color = Color(
-                                if (progress in 0f..0.33f) 0xFFEE3C3C
+                                if (progress >= 0.33f) 0xFFEE3C3C
                                 else 0xFFD9D9D9,
                             )
                         )
@@ -88,7 +93,7 @@ internal fun DopamineProgress(
                         .clip(RoundedCornerShape(10.dp))
                         .background(
                             color = Color(
-                                if (progress in 0.34f..0.66f) 0xFFEE3C3C
+                                if (progress >= 0.66f) 0xFFEE3C3C
                                 else 0xFFD9D9D9,
                             )
                         )
@@ -102,44 +107,44 @@ internal fun DopamineProgress(
                         .clip(RoundedCornerShape(10.dp))
                         .background(
                             color = Color(
-                                if (progress in 0.67f..1f) 0xFFEE3C3C
+                                if (progress >= 0.9f) 0xFFEE3C3C
                                 else 0xFFD9D9D9,
                             )
                         )
                 )
             }
         }
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceAround,
-        ) {
-            Column {
-                Text(
-                    text = "부족",
-                    color = Color(
-                        if (progress in 0f..0.33f) 0xFF000000
-                        else 0xFFD9D9D9,
-                    )
+    }
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceAround,
+    ) {
+        Column {
+            Text(
+                text = "부족",
+                color = Color(
+                    if (progress in 0f..0.33f) 0xFF000000
+                    else 0xFFD9D9D9,
                 )
-            }
-            Column {
-                Text(
-                    text = "정상",
-                    color = Color(
-                        if (progress in 0.34f..0.66f) 0xFF000000
-                        else 0xFFD9D9D9,
-                    )
+            )
+        }
+        Column {
+            Text(
+                text = "정상",
+                color = Color(
+                    if (progress in 0.34f..0.66f) 0xFF000000
+                    else 0xFFD9D9D9,
                 )
-            }
-            Column {
-                Text(
-                    text = "많음",
-                    color = Color(
-                        if (progress in 0.67f..2f) 0xFF000000
-                        else 0xFFD9D9D9,
-                    )
+            )
+        }
+        Column {
+            Text(
+                text = "많음",
+                color = Color(
+                    if (progress in 0.67f..2f) 0xFF000000
+                    else 0xFFD9D9D9,
                 )
-            }
+            )
         }
     }
 }

@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -26,7 +25,9 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -46,6 +47,8 @@ import com.seunghoon.generator.component.Header
 
 @Composable
 internal fun HomeScreen(navHostController: NavHostController) {
+    var start by remember { mutableIntStateOf(1) }
+    var max by remember { mutableIntStateOf(100) }
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -85,13 +88,15 @@ internal fun HomeScreen(navHostController: NavHostController) {
                     }
                     Spacer(modifier = Modifier.weight(1f))
                     Text(
-                        text = "75/100",
-                        style = Typography.Medium.copy(fontWeight = FontWeight.Bold),
+                        text = "$start/$max",
+                        style = Typography.Medium,
+                        fontWeight = FontWeight.Bold,
                     )
                 }
+                Spacer(modifier = Modifier.height(28.dp))
                 DopamineProgress(
-                    currentProgress = 1f,
-                    maxProgress = 5f,
+                    currentProgress = start.toFloat(),
+                    maxProgress = max.toFloat(),
                 )
             }
         }
@@ -134,7 +139,11 @@ internal fun HomeScreen(navHostController: NavHostController) {
                     style = Typography.Medium.copy(fontWeight = FontWeight.Bold),
                 )
             }
-            Row(modifier = Modifier.fillMaxWidth().weight(1f), horizontalArrangement = Arrangement.Center) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f), horizontalArrangement = Arrangement.Center
+            ) {
                 DopamineCard(
                     title = "숙면",
                     imageUrl = R.drawable.ic_sleep,
@@ -151,7 +160,11 @@ internal fun HomeScreen(navHostController: NavHostController) {
                     onClick = {},
                 )
             }
-            Row(modifier = Modifier.fillMaxWidth().weight(1f), horizontalArrangement = Arrangement.Center) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f), horizontalArrangement = Arrangement.Center
+            ) {
                 DopamineCard(
                     title = "여행",
                     imageUrl = R.drawable.ic_trip,
@@ -171,53 +184,6 @@ internal fun HomeScreen(navHostController: NavHostController) {
         }
     }
 }
-
-@Composable
-internal fun MyDopamineCard(
-    title: String,
-    onClick: () -> Unit = {},
-    content: @Composable () -> Unit,
-) {
-    Column(
-        modifier = Modifier
-            .shadow(
-                elevation = 6.dp,
-                shape = RoundedCornerShape(20.dp),
-            )
-            .clip(RoundedCornerShape(20.dp))
-            .background(Color.White)
-            .padding(
-                horizontal = 10.dp,
-                vertical = 20.dp,
-            )
-    ) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Text(
-                text = title,
-                style = Typography.HeadLine.copy(
-                    fontSize = 16.sp,
-                )
-            )
-            content()
-        }
-        Spacer(modifier = Modifier.height(10.dp))
-        DopamineProgress(
-            currentProgress = 1f,
-            maxProgress = 7f,
-        )
-    }
-}
-
-data class Dopamine(
-    val title: String,
-    val id: Long,
-    val checked: Boolean,
-    @DrawableRes val image: Int,
-)
 
 @Composable
 internal fun RowScope.DopamineCard(
