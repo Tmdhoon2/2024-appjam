@@ -1,6 +1,5 @@
 package com.seunghoon.generator.feature.home
 
-import androidx.annotation.DrawableRes
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.Image
@@ -19,20 +18,22 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -47,8 +48,11 @@ import com.seunghoon.generator.component.Header
 
 @Composable
 internal fun HomeScreen(navHostController: NavHostController) {
-    var start by remember { mutableIntStateOf(1) }
+    var start by remember { mutableIntStateOf(0) }
     var max by remember { mutableIntStateOf(100) }
+
+    var maxChecked by remember { mutableIntStateOf(4) }
+    val checked = remember { mutableStateListOf<Int>() }
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -58,6 +62,7 @@ internal fun HomeScreen(navHostController: NavHostController) {
         Spacer(modifier = Modifier.height(18.dp))
         Column(
             modifier = Modifier
+                .verticalScroll(rememberScrollState())
                 .clip(RoundedCornerShape(10.dp))
                 .padding(horizontal = 18.dp)
                 .background(
@@ -135,7 +140,7 @@ internal fun HomeScreen(navHostController: NavHostController) {
                 }
                 Spacer(modifier = Modifier.weight(1f))
                 Text(
-                    text = "2/4",
+                    text = "${checked.size}/${maxChecked}",
                     style = Typography.Medium.copy(fontWeight = FontWeight.Bold),
                 )
             }
@@ -147,17 +152,31 @@ internal fun HomeScreen(navHostController: NavHostController) {
                 DopamineCard(
                     title = "숙면",
                     imageUrl = R.drawable.ic_sleep,
-                    checked = false,
-                    onChecked = { },
-                    onClick = {},
+                    checked = checked.contains(0),
+                    onChecked = {
+                        if (checked.contains(0)) {
+                            checked.remove(0)
+                            start -= 20
+                        } else {
+                            checked.add(0)
+                            start += 20
+                        }
+                    },
                 )
                 Spacer(modifier = Modifier.width(20.dp))
                 DopamineCard(
                     title = "TV",
                     imageUrl = R.drawable.ic_tv,
-                    checked = false,
-                    onChecked = { },
-                    onClick = {},
+                    checked = checked.contains(1),
+                    onChecked = {
+                        if (checked.contains(1)) {
+                            checked.remove(1)
+                            start -= 20
+                        } else {
+                            checked.add(1)
+                            start += 20
+                        }
+                    },
                 )
             }
             Row(
@@ -168,17 +187,31 @@ internal fun HomeScreen(navHostController: NavHostController) {
                 DopamineCard(
                     title = "여행",
                     imageUrl = R.drawable.ic_trip,
-                    checked = false,
-                    onChecked = { },
-                    onClick = {},
+                    checked = checked.contains(2),
+                    onChecked = {
+                        if (checked.contains(2)) {
+                            checked.remove(2)
+                            start -= 20
+                        } else {
+                            checked.add(2)
+                            start += 20
+                        }
+                    },
                 )
                 Spacer(modifier = Modifier.width(20.dp))
                 DopamineCard(
                     title = "음식",
                     imageUrl = R.drawable.ic_food,
-                    checked = false,
-                    onChecked = { },
-                    onClick = {},
+                    checked = checked.contains(3),
+                    onChecked = {
+                        if (checked.contains(3)) {
+                            checked.remove(3)
+                            start -= 20
+                        } else {
+                            checked.add(3)
+                            start += 20
+                        }
+                    },
                 )
             }
         }
@@ -191,11 +224,10 @@ internal fun RowScope.DopamineCard(
     imageUrl: Int,
     checked: Boolean,
     onChecked: () -> Unit,
-    onClick: () -> Unit,
 ) {
     val checkedAlpha by animateFloatAsState(
-        targetValue = if (checked) 0f
-        else 1f,
+        targetValue = if (checked) 1f
+        else 0f,
         label = "",
     )
     val checkBackground by animateColorAsState(
@@ -208,6 +240,11 @@ internal fun RowScope.DopamineCard(
         modifier = Modifier
             .weight(1f)
             .padding(12.dp)
+            .clickable(
+                onClick = onChecked,
+                indication = null,
+                interactionSource = remember { MutableInteractionSource() },
+            )
             .clip(RoundedCornerShape(20.dp)),
     ) {
         Image(
@@ -231,19 +268,20 @@ internal fun RowScope.DopamineCard(
                     modifier = Modifier
                         .size(30.dp)
                         .clip(CircleShape)
-                        .alpha(checkedAlpha)
                         .background(checkBackground),
                     contentAlignment = Alignment.Center,
                 ) {
                     Icon(
+                        modifier = Modifier.alpha(checkedAlpha),
                         painter = painterResource(id = R.drawable.ic_check),
                         contentDescription = null,
+                        tint = Color.White,
                     )
                 }
             }
             Row(
                 modifier = Modifier.clickable(
-                    onClick = onClick,
+                    onClick = onChecked,
                     indication = null,
                     interactionSource = remember { MutableInteractionSource() },
                 ),

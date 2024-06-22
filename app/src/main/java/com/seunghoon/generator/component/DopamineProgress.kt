@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
@@ -26,31 +27,43 @@ internal fun DopamineProgress(
     currentProgress: Float,
     maxProgress: Float,
 ) {
-    val progress = currentProgress / maxProgress
+    val progress = if (currentProgress != 0f) currentProgress / maxProgress
+    else 0f
     Column {
         Row(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceAround,
+            horizontalArrangement = Arrangement.Center,
         ) {
-            Image(
-                alpha = if (progress in 0f..0.33f) 1f
-                else 0f,
-                painter = painterResource(id = R.drawable.ic_1),
-                contentDescription = null,
-            )
-            Image(
-                alpha = if (progress in 0.34f..0.66f) 1f
-                else 0f,
-                painter = painterResource(id = R.drawable.ic_2),
-                contentDescription = null,
-            )
-            Image(
-                alpha = if (progress in 0.67f..2f) 1f
-                else 0f,
-                painter = painterResource(id = R.drawable.ic_3),
-                contentDescription = null,
-            )
+            when (progress) {
+                in 0f..0.2f -> {
+                    Image(
+                        alpha = if (progress in 0f..0.33f) 1f
+                        else 0f,
+                        painter = painterResource(id = R.drawable.ic_1),
+                        contentDescription = null,
+                    )
+                }
+
+                in 0.2f..0.5f -> {
+                    Image(
+                        alpha = if (progress in 0.34f..0.66f) 1f
+                        else 0f,
+                        painter = painterResource(id = R.drawable.ic_2),
+                        contentDescription = null,
+                    )
+                }
+
+                else -> {
+                    Image(
+                        alpha = if (progress in 0.67f..2f) 1f
+                        else 0f,
+                        painter = painterResource(id = R.drawable.ic_3),
+                        contentDescription = null,
+                    )
+                }
+            }
         }
+        Spacer(modifier = Modifier.height(24.dp))
         Box(contentAlignment = Alignment.CenterStart) {
             Box(
                 modifier = Modifier
@@ -79,7 +92,7 @@ internal fun DopamineProgress(
                         .clip(RoundedCornerShape(10.dp))
                         .background(
                             color = Color(
-                                if (progress >= 0.33f) 0xFFEE3C3C
+                                if (progress >= 0.2f) 0xFFEE3C3C
                                 else 0xFFD9D9D9,
                             )
                         )
@@ -93,7 +106,7 @@ internal fun DopamineProgress(
                         .clip(RoundedCornerShape(10.dp))
                         .background(
                             color = Color(
-                                if (progress >= 0.66f) 0xFFEE3C3C
+                                if (progress >= 0.5f) 0xFFEE3C3C
                                 else 0xFFD9D9D9,
                             )
                         )
@@ -107,7 +120,7 @@ internal fun DopamineProgress(
                         .clip(RoundedCornerShape(10.dp))
                         .background(
                             color = Color(
-                                if (progress >= 0.9f) 0xFFEE3C3C
+                                if (progress >= 0.85f) 0xFFEE3C3C
                                 else 0xFFD9D9D9,
                             )
                         )
